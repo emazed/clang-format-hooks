@@ -302,7 +302,7 @@ else # Diff-only.
         readonly patch_dest=/dev/stdout
     fi
 
-    declare git_args=(git diff -U0 --no-color)
+    declare git_args=(git diff -U0 --no-color --relative)
     [ "$staged" = true ] && git_args+=("--staged")
 
     # $format_diff may contain a command ("python") and the script to excute, so we
@@ -325,8 +325,9 @@ else # Diff-only.
             -p1 \
             -style="$style" \
             -iregex="$exclusions_regex"'.*\.(c|cpp|cxx|cc|h|hpp|m|mm|js|java)' \
-            > "$patch_dest" \
-        || exit 1
+            > "$patch_dest"
+
+#        || exit 1
 
     if [ "$apply_to_staged" = true ]; then
         if [ ! -s "$patch_dest" ]; then
